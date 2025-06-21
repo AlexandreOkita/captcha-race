@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trophy, Play } from "lucide-react"
+import { useState } from "react";
+import { Trophy, Play } from "lucide-react";
+import { Button } from "./components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
+import { Input } from "./components/ui/input";
 
 export default function Component() {
-  const [playerName, setPlayerName] = useState("")
+  const [playerName, setPlayerName] = useState("");
 
   const handleStart = () => {
     if (playerName.trim()) {
-      console.log("Starting game for:", playerName)
+      console.log("Starting game for:", playerName);
       // Aqui você implementaria a lógica para iniciar o jogo
     }
-  }
+  };
 
   const handleLeaderboard = () => {
-    console.log("Opening leaderboard")
+    console.log("Opening leaderboard");
     // Aqui você implementaria a lógica para mostrar o leaderboard
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
@@ -28,12 +28,17 @@ export default function Component() {
           <CardTitle className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Captcha Race
           </CardTitle>
-          <p className="text-slate-600 mt-2">Teste sua velocidade resolvendo captchas</p>
+          <p className="text-slate-600 mt-2">
+            Teste sua velocidade resolvendo captchas
+          </p>
         </CardHeader>
 
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <label htmlFor="player-name" className="text-sm font-medium text-slate-700">
+            <label
+              htmlFor="player-name"
+              className="text-sm font-medium text-slate-700"
+            >
               Seu nome
             </label>
             <Input
@@ -69,5 +74,5 @@ export default function Component() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
