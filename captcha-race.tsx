@@ -5,46 +5,20 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Trophy, Play } from "lucide-react"
-import GameScreen from "@/screens/page"
 
 export default function Component() {
   const [playerName, setPlayerName] = useState("")
-  const [currentScreen, setCurrentScreen] = useState<"home" | "game" | "leaderboard">("home")
 
   const handleStart = () => {
     if (playerName.trim()) {
-      setCurrentScreen("game")
+      console.log("Starting game for:", playerName)
+      // Aqui você implementaria a lógica para iniciar o jogo
     }
   }
 
   const handleLeaderboard = () => {
-    setCurrentScreen("leaderboard")
-  }
-
-  const handleBack = () => {
-    setCurrentScreen("home")
-  }
-
-  if (currentScreen === "game") {
-    return <GameScreen playerName={playerName} onBack={handleBack} />
-  }
-
-  if (currentScreen === "leaderboard") {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Leaderboard</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Leaderboard coming soon...</p>
-            <Button onClick={handleBack} className="mt-4">
-              Back to Home
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    )
+    console.log("Opening leaderboard")
+    // Aqui você implementaria a lógica para mostrar o leaderboard
   }
 
   return (
