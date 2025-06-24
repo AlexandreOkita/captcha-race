@@ -11,12 +11,14 @@ import {
 } from "../components/ui/card";
 import { Trophy, Play } from "lucide-react";
 import GameScreen from "../screens/game";
+import LeaderboardScreen from "../screens/leaderboard";
 
 export default function Component() {
   const [playerName, setPlayerName] = useState("");
   const [currentScreen, setCurrentScreen] = useState<
     "home" | "game" | "leaderboard"
   >("home");
+  const [gameScore, setGameScore] = useState(-1);
 
   const handleStart = () => {
     if (playerName.trim()) {
@@ -29,29 +31,22 @@ export default function Component() {
   };
 
   const handleBack = () => {
+    setGameScore(-1);
+    setPlayerName("");
     setCurrentScreen("home");
   };
 
+  const onGameComplete = (score: number) => {
+    setCurrentScreen("leaderboard");
+    setGameScore(score);
+  }
+
   if (currentScreen === "game") {
-    return <GameScreen playerName={playerName} onBack={handleBack} />;
+    return <GameScreen playerName={playerName} onBack={handleBack} onGameComplete={onGameComplete} />;
   }
 
   if (currentScreen === "leaderboard") {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Leaderboard</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Leaderboard coming soon...</p>
-            <Button onClick={handleBack} className="mt-4">
-              Back to Home
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <LeaderboardScreen playerName={playerName} playerScore={gameScore} onBack={handleBack} />;
   }
 
   return (
