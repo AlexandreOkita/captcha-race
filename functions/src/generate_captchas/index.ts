@@ -5,7 +5,9 @@ import * as svgCap from "svg-captcha";
 const CAPTCHAS_PER_DAY = 10;
 
 export const generateCaptcha = async () => {
-  const dateKey = new Date().toISOString().split("T")[0];
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate());
+  const dateKey = tomorrow.toISOString().split("T")[0];
   const storage = getStorage();
   const firestore = getFirestore();
   const captchasObjects: {

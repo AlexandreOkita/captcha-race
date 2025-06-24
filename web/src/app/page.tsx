@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Trophy, Play } from "lucide-react";
-import GameScreen from "../screens/page";
+import GameScreen from "../screens/game";
 
 export default function Component() {
   const [playerName, setPlayerName] = useState("");
