@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Card, CardContent } from "../components/ui/card";
@@ -45,7 +45,7 @@ export default function GameScreen({ playerName, onBack, onGameComplete }: GameS
     }
   }, [countdown, captchas]);
     
-    
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,6 +73,13 @@ export default function GameScreen({ playerName, onBack, onGameComplete }: GameS
       setTimeout(() => {
         setShowResult(null)
         setAnswer("")
+        setTimeout(() => {
+          console.log("Focusing input after submit");
+          if (inputRef.current) {
+            console.log("Input ref is set, focusing now");
+            inputRef.current.focus();
+          }
+        }, 100);
       }, 1000)
     }
   };
@@ -219,6 +226,7 @@ export default function GameScreen({ playerName, onBack, onGameComplete }: GameS
                 </label>
                 <Input
                   id="captcha-answer"
+                  ref={inputRef}
                   type="text"
                   placeholder="Type your answer here..."
                   value={answer}
