@@ -28,6 +28,10 @@ export default function GameScreen({ playerName, onBack, onGameComplete }: GameS
   useEffect(() => {
     if (captchas.length === 0) {
       getTodayCaptchas().then((fetchedCaptchas) => {
+        fetchedCaptchas.forEach((captcha) => {
+            const img = new Image();
+            img.src = captcha.imageUrl;
+        });
         setCaptchas(fetchedCaptchas);
       });
     } else {
