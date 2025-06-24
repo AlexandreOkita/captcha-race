@@ -44,6 +44,13 @@ export default function LeaderboardScreen({ playerName, playerScore, onBack }: L
     loadData()
   }, [playerName, playerScore])
 
+  const getTimeString = (time: number) => {
+    // format: seconds.miliseconds
+    const seconds = Math.floor(time / 1000)
+    const milliseconds = time % 1000
+    return `${seconds}.${milliseconds.toString().padStart(3, '0')}`
+  }
+
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 1:
@@ -128,8 +135,8 @@ export default function LeaderboardScreen({ playerName, playerScore, onBack }: L
                   </div>
                 </div>
                 <div>
-                  <p className="text-blue-100 text-sm">Score</p>
-                  <p className="text-2xl font-bold mt-1">{playerScore.toLocaleString()}</p>
+                  <p className="text-blue-100 text-sm">Time</p>
+                  <p className="text-2xl font-bold mt-1">{getTimeString(playerScore)}</p>
                 </div>
                 <div>
                   <p className="text-blue-100 text-sm">Player</p>
@@ -172,8 +179,8 @@ export default function LeaderboardScreen({ playerName, playerScore, onBack }: L
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-xl font-bold text-slate-800">{entry.score.toLocaleString()}</p>
-                    <p className="text-sm text-slate-500">points</p>
+                    <p className="text-xl font-bold text-slate-800">{getTimeString(entry.score)}</p>
+                    <p className="text-sm text-slate-500">seconds</p>
                   </div>
                 </div>
               ))}
