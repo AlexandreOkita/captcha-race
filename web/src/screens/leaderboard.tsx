@@ -10,6 +10,7 @@ interface LeaderboardScreenProps {
   playerName: string
   playerScore: number
   onBack: () => void
+  redirect: boolean
 }
 
 interface LeaderboardEntry {
@@ -103,10 +104,15 @@ export default function LeaderboardScreen({ playerName, playerScore, onBack }: L
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <Button onClick={onBack} variant="outline" className="flex items-center gap-2">
-          <ArrowLeft className="w-4 h-4" />
-          Back to Home
-        </Button>
+        {
+          playerScore < 0 && (
+            <Button onClick={onBack} variant="outline" className="flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
+            </Button>
+          )
+        }
+        
         <h1 className="text-2xl font-bold text-slate-800">Leaderboard</h1>
         <div className="w-24" /> {/* Spacer for centering */}
       </div>

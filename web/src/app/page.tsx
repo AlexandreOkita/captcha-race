@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import {
@@ -14,11 +14,28 @@ import GameScreen from "../screens/game";
 import LeaderboardScreen from "../screens/leaderboard";
 
 export default function Component() {
+  // Get the current date in YYYY-MM-DD format
+  const today = new Date().toISOString().split("T")[0];
   const [playerName, setPlayerName] = useState("");
   const [currentScreen, setCurrentScreen] = useState<
     "home" | "game" | "leaderboard"
   >("home");
   const [gameScore, setGameScore] = useState(-1);
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    const savedSession = localStorage.getItem("session");
+    if (savedSession) {
+      const sessionData = JSON.parse(savedSession);
+      console.log("Session data:", sessionData);
+      if (sessionData && sessionData.today === today) {
+        setPlayerName(sessionData.playerName || "");
+        setGameScore(sessionData.score || -1);
+        setCurrentScreen("leaderboard");
+        setRedirect(true);
+      }
+    }
+  }, [today])
 
   const handleStart = () => {
     if (playerName.trim()) {
@@ -37,6 +54,7 @@ export default function Component() {
   };
 
   const onGameComplete = (score: number) => {
+    localStorage.setItem("session", JSON.stringify({ playerName, today, score }));
     setCurrentScreen("leaderboard");
     setGameScore(score);
   }
@@ -46,7 +64,7 @@ export default function Component() {
   }
 
   if (currentScreen === "leaderboard") {
-    return <LeaderboardScreen playerName={playerName} playerScore={gameScore} onBack={handleBack} />;
+    return <LeaderboardScreen playerName={playerName} playerScore={gameScore} onBack={handleBack} redirect={redirect}/>;
   }
 
   return (
