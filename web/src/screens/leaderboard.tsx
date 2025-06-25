@@ -5,6 +5,7 @@ import { ArrowLeft, Trophy, Medal, Award, Crown, Loader2, Badge } from "lucide-r
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { addScoreToLeaderboard, getLeaderboardForToday } from "../actions/leaderboard.actions"
+import { DateTime } from "luxon"
 
 interface LeaderboardScreenProps {
   playerName: string
@@ -23,6 +24,7 @@ export default function LeaderboardScreen({ playerName, playerScore, onBack }: L
   const [isLoading, setIsLoading] = useState(true)
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [playerRank, setPlayerRank] = useState<number | null>(null)
+  const [timeRemaining, setTimeRemaining] = useState<string>("")
 
   useEffect(() => {
     const loadData = async () => {
@@ -43,6 +45,9 @@ export default function LeaderboardScreen({ playerName, playerScore, onBack }: L
     }
 
     loadData()
+    setInterval(() => {
+      setTimeRemaining(getTimeRemaining())
+    }, 1000)
   }, [playerName, playerScore])
 
   const getRankIcon = (rank: number) => {
@@ -59,17 +64,18 @@ export default function LeaderboardScreen({ playerName, playerScore, onBack }: L
   }
 
   const getTimeRemaining = () => {
-    const now = new Date();
-    const midnight = new Date();
-    midnight.setHours(24, 0, 0, 0);
+    const now = DateTime.utc()
+    let midnight = DateTime.utc()
 
-    const diffMs = midnight.getTime() - now.getTime();
+    midnight = midnight.set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).plus({ days: 1 })
 
-    const hours = String(Math.floor(diffMs / (1000 * 60 * 60))).padStart(2, '0');
-    const minutes = String(Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-    const seconds = String(Math.floor((diffMs % (1000 * 60)) / 1000)).padStart(2, '0');
+    const diff = midnight.diff(now, ["hours", "minutes", "seconds"]).toObject()
+    const hours = Math.floor(diff.hours || 0)
+    const minutes = Math.floor(diff.minutes || 0)
+    const seconds = Math.floor(diff.seconds || 0)
 
-    const timeRemaining = `${hours}:${minutes}:${seconds}`;
+    const timeRemaining = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
     return timeRemaining;
   }
 
@@ -196,7 +202,7 @@ export default function LeaderboardScreen({ playerName, playerScore, onBack }: L
                     <p className="text-sm text-slate-600">Total Players</p>
                 </div>
                 <div>
-                    <p className="text-2xl font-bold text-slate-800">{getTimeRemaining()}</p>
+                    <p className="text-2xl font-bold text-slate-800">{timeRemaining}</p>
                     <p className="text-sm text-slate-600">Time until next round</p>
                 </div>
             </div>          
