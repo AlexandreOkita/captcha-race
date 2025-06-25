@@ -78,10 +78,9 @@ export default function GameScreen({ playerName, onBack, onGameComplete }: GameS
         setShowResult(null)
         setAnswer("")
         setTimeout(() => {
-          console.log("Focusing input after submit");
           if (inputRef.current) {
-            console.log("Input ref is set, focusing now");
             inputRef.current.focus();
+
           }
         }, 100);
       }, 1000)
@@ -237,6 +236,9 @@ export default function GameScreen({ playerName, onBack, onGameComplete }: GameS
                   onChange={(e) => setAnswer(e.target.value)}
                   className="h-12 text-lg text-center border-2 focus:border-blue-500 transition-colors"
                   autoFocus
+                  inputMode="text"
+                  autoComplete="off"
+                  spellCheck={false}
                 />
               </div>
 
